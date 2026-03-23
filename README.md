@@ -13,13 +13,13 @@
 ## 快速安装
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/overleaf_on_your_own/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/asimfish/overleaf_on_your_own/main/install.sh | bash
 ```
 
 或手动安装：
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/overleaf_on_your_own.git
+git clone https://github.com/asimfish/overleaf_on_your_own.git
 cd overleaf_on_your_own
 bash install.sh
 ```
