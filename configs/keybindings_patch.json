@@ -1,0 +1,14 @@
+[
+    {
+        "key": "ctrl+s",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.files.save",
+                "latex-workshop.build",
+                "latex-workshop.view"
+            ]
+        },
+        "when": "editorTextFocus && editorLangId == 'latex'"
+    }
+]
