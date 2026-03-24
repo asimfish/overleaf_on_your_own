@@ -102,14 +102,37 @@ else
     info "已创建 $KEYBINDINGS_FILE"
 fi
 
-# ── 6. 完成 ──────────────────────────────────────────────────
+# ── 6. 检查可选依赖 ──────────────────────────────────────────
+echo ""
+info "检查可选依赖..."
+# pdfinfo（页数读取，auto_page_fit 使用）
+if command -v pdfinfo >/dev/null 2>&1; then
+    info "pdfinfo 已安装（auto_page_fit 使用）"
+else
+    warn "pdfinfo 未安装，auto_page_fit 将用 .log 估算页数（精度稍低）"
+    warn "建议安装：sudo apt install poppler-utils"
+fi
+# python3 anthropic（auto_revise 使用）
+if python3 -c "import anthropic" 2>/dev/null; then
+    info "anthropic SDK 已安装（auto_revise 使用）"
+else
+    warn "anthropic SDK 未安装，auto_revise 不可用"
+    warn "安装：pip install anthropic"
+fi
+
+# ── 7. 完成 ──────────────────────────────────────────────────
 echo ""
 info "✓ 安装完成！"
 echo ""
-echo "  下一步："
-echo "  1. 在 $EDITOR_NAME 中按 Ctrl+Shift+P → 输入 'Reload Window' 重载配置"
+echo "  基础功能（LaTeX 实时预览）："
+echo "  1. 在 ${EDITOR_NAME} 中按 Ctrl+Shift+P → 输入 'Reload Window' 重载配置"
 echo "  2. 打开你的 .tex 文件"
 echo "  3. 按 Ctrl+S → 自动编译并打开 PDF 预览"
 echo "  4. 在 PDF 中双击 → 跳转到对应 tex 行"
 echo "  5. 在 tex 中按 Ctrl+Alt+J → 高亮 PDF 对应位置"
+echo ""
+echo "  高级功能："
+echo "  • 自动调页数：python3 tools/auto_page_fit.py paper/main.tex --target 8"
+echo "  • 自动改稿：  python3 tools/auto_revise.py paper/main.tex --venue ICML"
+echo "                （需要：pip install anthropic && export ANTHROPIC_API_KEY=...）"
 echo ""

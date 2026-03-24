@@ -3,12 +3,25 @@
 在 Cursor/VSCode 中实现类 Overleaf 的 LaTeX 实时编译预览体验。
 
 **功能特性：**
+
+**实时预览**
 - `Ctrl+S` 自动保存 + 编译 + 打开 PDF 预览
 - PDF 双击任意位置 → 跳转到对应 tex 源码行（反向 SyncTeX）
 - tex 行光标 → 高亮 PDF 对应位置（正向 SyncTeX，`Ctrl+Alt+J`）
 - 编译错误行内红色波浪线提示
 - 编译状态栏实时显示
 - 文件变化自动编译（500ms 防抖）
+
+**自动调页数**
+- 一键将论文压缩/扩展到指定页数
+- 自动应用排版策略（图片间距、microtype、vspace 等）
+- 每轮自动备份，编译失败自动恢复
+
+**自动迭代改稿**
+- Claude API 模拟学术审稿人，多轮审稿+修改循环
+- 支持 ICML / ICLR / NeurIPS / CVPR / ECCV / AAAI
+- 断点续跑，每轮保存状态和备份 PDF
+- 灵感来源：[ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep)
 
 ## 快速安装
 
@@ -89,6 +102,76 @@ bash install.sh
 | 双击 PDF | 跳转到对应 tex 行（反向 SyncTeX）|
 | `Ctrl+Alt+J` | 正向 SyncTeX（tex → PDF）|
 | `Ctrl+Alt+B` | 手动触发编译 |
+
+## 高级功能
+
+### 自动调页数
+
+```bash
+# 压缩论文到 8 页
+python3 tools/auto_page_fit.py paper/main.tex --target 8
+
+# 先试运行，不修改文件
+python3 tools/auto_page_fit.py paper/main.tex --target 8 --dry-run
+```
+
+**可选依赖（页数读取更准确）：**
+```bash
+sudo apt install poppler-utils
+```
+
+详细说明见 [skills/page-fit/SKILL.md](skills/page-fit/SKILL.md)
+
+---
+
+### 自动迭代改稿
+
+**前置要求：**
+```bash
+pip install anthropic
+export ANTHROPIC_API_KEY=your_api_key_here
+```
+
+```bash
+# 针对 ICML 自动改稿（最多 4 轮）
+python3 tools/auto_revise.py paper/main.tex --venue ICML
+
+# 人工确认模式（每轮审稿后暂停）
+python3 tools/auto_revise.py paper/main.tex --venue ICML --human-checkpoint
+
+# 从上次中断处继续
+python3 tools/auto_revise.py paper/main.tex --venue ICML --resume
+
+# 只审稿，不修改论文
+python3 tools/auto_revise.py paper/main.tex --venue ICLR --dry-run
+```
+
+**组合使用：**
+```bash
+# 先改稿，再调页数
+python3 tools/auto_revise.py paper/main.tex --venue ICML
+python3 tools/auto_page_fit.py paper/main.tex --target 8
+```
+
+详细说明见 [skills/auto-revise/SKILL.md](skills/auto-revise/SKILL.md)
+
+---
+
+## 项目结构
+
+```
+overleaf_on_your_own/
+├── install.sh                        # 一键安装脚本
+├── configs/
+│   ├── workspace_settings.json       # LaTeX Workshop 工作区配置
+│   └── keybindings_patch.json        # 快捷键配置
+├── tools/
+│   ├── auto_page_fit.py              # 自动调页数
+│   └── auto_revise.py                # 自动迭代改稿
+└── skills/
+    ├── page-fit/SKILL.md             # page-fit 使用说明
+    └── auto-revise/SKILL.md          # auto-revise 使用说明
+```
 
 ## 配置说明
 
