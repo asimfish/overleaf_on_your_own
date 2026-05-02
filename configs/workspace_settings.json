@@ -1,7 +1,23 @@
 {
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 500,
-
+    "editor.minimap.enabled": false,
+    "editor.wordWrap": "on",
+    "editor.wrappingStrategy": "advanced",
+    "editor.wrappingIndent": "same",
+    "editor.scrollbar.horizontal": "hidden",
+    "[latex]": {
+        "editor.wordWrap": "on",
+        "editor.wrappingStrategy": "advanced",
+        "editor.wrappingIndent": "same",
+        "editor.scrollbar.horizontal": "hidden"
+    },
+    "[tex]": {
+        "editor.wordWrap": "on",
+        "editor.wrappingStrategy": "advanced",
+        "editor.wrappingIndent": "same",
+        "editor.scrollbar.horizontal": "hidden"
+    },
     "latex-workshop.latex.tools": [
         {
             "name": "latexmk",
@@ -14,7 +30,9 @@
                 "-outdir=%OUTDIR%",
                 "%DOC%"
             ],
-            "env": {}
+            "env": {
+                "PATH": "/usr/bin:/opt/conda/bin:/Library/TeX/texbin:/usr/local/bin:/opt/homebrew/bin:/bin:/usr/sbin:/sbin"
+            }
         },
         {
             "name": "pdflatex",
@@ -25,13 +43,17 @@
                 "-file-line-error",
                 "%DOC%"
             ],
-            "env": {}
+            "env": {
+                "PATH": "/usr/bin:/opt/conda/bin:/Library/TeX/texbin:/usr/local/bin:/opt/homebrew/bin:/bin:/usr/sbin:/sbin"
+            }
         },
         {
             "name": "bibtex",
             "command": "bibtex",
             "args": ["%DOCFILE%"],
-            "env": {}
+            "env": {
+                "PATH": "/usr/bin:/opt/conda/bin:/Library/TeX/texbin:/usr/local/bin:/opt/homebrew/bin:/bin:/usr/sbin:/sbin"
+            }
         }
     ],
     "latex-workshop.latex.recipes": [
